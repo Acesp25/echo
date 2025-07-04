@@ -7,14 +7,14 @@ I will be modifying it how I see fit as I learn about proper driver implementati
 
 ## How to compile and run?
 1. Clone repo into a directory of your choice
-2. cd into repo, do '''make'''
-3. Load the module: '''kldload -v ./echo.ko'''
+2. cd into repo, do ```make```
+3. Load the module: ```kldload -v ./echo.ko```
 4. Test the module by:
-'''sh
+```sh
 echo -n "Hi :D" > /dev/echo 
 cat /dev/echo
-'''
-5. Unload the module: '''kldunload echo'''
+```
+6. Unload the module: kldunload echo'''
 
 ## Current Fixes
 Implemented QUIESCE event to handle soft and hard unloading. 
