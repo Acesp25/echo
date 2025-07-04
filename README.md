@@ -14,7 +14,7 @@ I will be modifying it how I see fit as I learn about proper driver implementati
 echo -n "Hi :D" > /dev/echo 
 cat /dev/echo
 ```
-6. Unload the module: kldunload echo'''
+6. Unload the module: ```kldunload echo```
 
 ## Current Fixes
 Implemented QUIESCE event to handle soft and hard unloading. 
