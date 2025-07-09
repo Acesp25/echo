@@ -34,7 +34,6 @@ struct s_echo {
 /* vars */
 static struct cdev *echo_dev;
 static struct s_echo *echomsg;
-static volatile u_int open = 0; // Keep track of how many times echo_open was called
 
 MALLOC_DECLARE(M_ECHOBUF);
 MALLOC_DEFINE(M_ECHOBUF, "echobuffer", "buffer for echo module");
@@ -66,11 +65,11 @@ echo_loader(struct module *m __unused, int what, void *arg __unused)
 		printf("Echo device loaded.\n");
 		break;
     case MOD_QUIESCE:
-        if (open > 0) error = EBUSY;
+        if (echo_dev->si_usecount > 0) error = EBUSY;
         break;
 	case MOD_UNLOAD:
-		destroy_dev(echo_dev);
-		free(echomsg, M_ECHOBUF);
+    	destroy_dev(echo_dev);
+	    free(echomsg, M_ECHOBUF);
 		printf("Echo device unloaded.\n");
 		break;
 	default:
@@ -90,7 +89,6 @@ echo_open(struct cdev *dev, int oflags __unused, int devtype __unused,
 
 	uprintf("Opened device \"echo\" successfully.\n");
 
-    atomic_add_int(&open, 1);
 	return (error);
 }
 
@@ -104,7 +102,6 @@ echo_close(struct cdev *dev, int fflag __unused, int devtype __unused,
 
 	uprintf("Closing device \"echo\".\n");
 
-    atomic_subtract_int(&open, 1);
 	return (error);
 }
 
